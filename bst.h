@@ -442,9 +442,34 @@ Value const & BinarySearchTree<Key, Value>::operator[](const Key& key) const
 * overwrite the current value with the updated value.
 */
 template<class Key, class Value>
-void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &keyValuePair)
-{
+void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &keyValuePair){
     // TODO
+    // traverse BST
+    if (root_ == nullptr){
+        root_ = new Node<Key, Value>(keyValuePair.first, keyValuePair.second, nullptr);
+        return;
+    }
+    Node<Key, Value>* current = root_;
+    while (true){
+        if (keyValuePair.first == current->getKey()){
+            current->setValue(keyValuePair.second);
+            return;
+        }
+        else if (keyValuePair.first < current->getKey()){
+            if (current->getLeft() == nullptr){
+                current->setLeft(new Node<Key, Value>(keyValuePair.first, keyValuePair.second, current));
+                return;
+            }
+            current = current->getLeft();
+        }
+        else { // .first > key; so go right.
+            if (current->getRight() == nullptr){
+                current->setRight(new Node<Key, Value>(keyValuePair.first, keyValuePair.second, current));
+                return;
+            }
+            current = current->getRight();
+        }
+    }
 }
 
 
@@ -454,9 +479,67 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
 * should swap with the predecessor and then remove.
 */
 template<typename Key, typename Value>
-void BinarySearchTree<Key, Value>::remove(const Key& key)
-{
+void BinarySearchTree<Key, Value>::remove(const Key& key){
     // TODO
+    if (root_ == nullptr) return;
+    Node<Key, Value>* current = root_;
+    while(true){
+        if (key == current->getKey()){
+            // TODO:
+            if (current->getLeft() == nullptr && current->getRight() == nullptr){ // current is leaf node
+                delete current;
+            }
+            else if (current->getLeft() == nullptr && current->getRight() != nullptr){
+                Node<Key, Value>* child = current->getRight();
+                Node<Key, Value>* parent = current->getParent();
+                child->setParent(parent);
+                if (parent == nullptr){ // removing the root
+                    root_ = child;
+                }
+                else if (parent->getLeft() == current){ // current was a left child
+                    parent->setLeft(child);
+                }
+                else{ // current was a right child
+                    parent->setRight(child);
+                }
+                delete current;
+                return;
+            }
+            else if (current->getLeft() != nullptr && current->getRight() == nullptr){
+                Node<Key, Value>* child = current->getLeft();
+                Node<Key, Value>* parent = current->getParent();
+                child->setParent(parent);
+                if (parent == nullptr){ // removing the root
+                    root_ = child;
+                }
+                else if (parent->getLeft() == current){ // current was a left child
+                    parent->setLeft(child);
+                }
+                else{ // current was a right child
+                    parent->setRight(child);
+                }
+                delete current;
+                return;
+            }
+            // MORE TODO here:: <<<<<<-----------------
+            else if ()
+
+
+
+        }
+        else if (key < current->getKey()){
+            if (current->getLeft() == nullptr){ // node not found
+                return;
+            }
+            current = current->getLeft();
+        }
+        else{ // key > getKey()
+            if (current->getRight() == nullptr){ // node not found
+                return;
+            }
+            current = current->getRight();
+        }
+    }
 }
 
 
