@@ -1,7 +1,7 @@
 #ifndef RECCHECK
 //if you want to add any #includes like <iostream> you must do them here (before the next endif)
 
-#includes like <iostream>
+#include <iostream>
 #endif
 
 #include "equal-paths.h"
