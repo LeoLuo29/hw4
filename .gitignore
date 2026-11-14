@@ -3,3 +3,4 @@ bst-test
 equal-paths-test
 *.o
 
+answer.txt
